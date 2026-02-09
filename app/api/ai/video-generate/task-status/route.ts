@@ -44,7 +44,9 @@ export async function GET(request: NextRequest) {
       try {
         const storage = newStorage();
         const resultUrl = taskData.results[0];
-        const extension = resultUrl.split('.').pop()?.split('?')[0] || 'mp4';
+        const urlPath = new URL(resultUrl).pathname;
+        const extMatch = urlPath.match(/\.(\w+)$/);
+        const extension = extMatch ? extMatch[1] : 'mp4';
 
         const now = new Date();
         const year = now.getFullYear();
