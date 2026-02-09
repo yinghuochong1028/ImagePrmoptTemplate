@@ -61,6 +61,7 @@ AUTH_GOOGLE_SECRET="your-google-client-secret"
 # Required: Supabase
 SUPABASE_URL="your-supabase-url"
 SUPABASE_ANON_KEY="your-supabase-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
 
 # Required: Cloudflare R2 Storage (for AI-generated images/videos)
 STORAGE_ENDPOINT="https://your-account-id.r2.cloudflarestorage.com"
@@ -204,16 +205,27 @@ docker run -p 3000:3000 ai-image-saas:latest
 | `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret | `GOCSPX-xxx` |
 | `SUPABASE_URL` | Supabase project URL | `https://xxx.supabase.co` |
 | `SUPABASE_ANON_KEY` | Supabase anonymous key | `eyJxxx...` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server-side only) | `eyJxxx...` |
+| `STORAGE_ENDPOINT` | Cloudflare R2 endpoint | `https://xxx.r2.cloudflarestorage.com` |
+| `STORAGE_REGION` | R2 region (use "auto") | `auto` |
+| `STORAGE_ACCESS_KEY` | R2 access key ID | Your R2 access key |
+| `STORAGE_SECRET_KEY` | R2 secret access key | Your R2 secret |
+| `STORAGE_BUCKET` | R2 bucket name | `your-bucket-name` |
 
 ### Optional Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `EVOLINK_API_KEY` | Evolink API key for nano-banana | - |
+| `EVOLINK_API_URL` | Evolink API base URL | `https://api.evolink.ai` |
+| `STORAGE_DOMAIN` | Custom R2 domain (optional) | - |
 | `NEXT_PUBLIC_WEB_URL` | Your website URL | `http://localhost:3006` |
-| `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID` | Google Analytics ID | - |
+| `NEXT_PUBLIC_PROJECT_NAME` | Project display name | `AI Image SaaS` |
+| `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID` | Google Analytics tracking ID | - |
+| `NEXT_PUBLIC_CLARITY_ID` | Microsoft Clarity tracking ID | - |
 | `STRIPE_PUBLIC_KEY` | Stripe publishable key | - |
 | `STRIPE_PRIVATE_KEY` | Stripe secret key | - |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret | `whsec_xxx` |
 
 ## 🎯 AI Provider Integration
 
