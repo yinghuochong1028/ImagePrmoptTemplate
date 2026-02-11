@@ -37,7 +37,7 @@ const nextConfig = {
         ? { exclude: ["error", "warn"] }
         : false,
   },
-  // 这里可以保留原来的 experimental 配置，也可以留空，真正生效的是下面的 configWithMDX
+  // 这里保持原来的 experimental 配置即可，不要加 runtime
   experimental: {
     optimizePackageImports: ["react-icons"],
   },
@@ -104,12 +104,11 @@ const nextConfig = {
   },
 };
 
-// 在这里合并最终的 experimental 配置：同时包含 mdxRs 和 runtime = "nodejs"
+// 最终开启 mdxRs 即可，不要再把 runtime 放在 experimental 里
 const configWithMDX = {
   ...nextConfig,
   experimental: {
     mdxRs: true,
-    runtime: "nodejs",
   },
 };
 

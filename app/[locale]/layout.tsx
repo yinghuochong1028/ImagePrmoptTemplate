@@ -8,13 +8,16 @@ import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "@/providers/theme";
 import { cn } from "@/lib/utils";
-import Script from 'next/script'
+import Script from "next/script";
 import { ToastProvider } from "@/components/ui/toast";
 import Analytics from "@/components/analytics";
 import AuthSessionProvider from "@/auth/session";
 import SignModal from "@/components/sign/modal";
 import { AppContextProvider } from "@/contexts/app";
 import { auth } from "@/auth";
+
+// 关键新增这一行：指定使用 Node.js 运行时
+export const runtime = "nodejs";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -57,14 +60,18 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
         {googleAdsenseCode && (
           <meta name="google-adsense-account" content={googleAdsenseCode} />
         )}
 
         <link rel="icon" href="/favicon.ico" />
 
-        {webUrl && locales &&
+        {webUrl &&
+          locales &&
           locales.map((loc) => (
             <link
               key={loc}
@@ -73,7 +80,9 @@ export default async function RootLayout({
               href={`${webUrl}${loc === "en" ? "" : `/${loc}`}/`}
             />
           ))}
-        {webUrl && <link rel="alternate" hrefLang="x-default" href={webUrl} />}
+        {webUrl && (
+          <link rel="alternate" hrefLang="x-default" href={webUrl} />
+        )}
       </head>
       <body
         className={cn(
@@ -100,7 +109,7 @@ export default async function RootLayout({
                 var s = document.getElementsByTagName("script")[0];
                 s.parentNode.insertBefore(hm, s);
               })();
-            `
+            `,
           }}
         />
         {clarityId && (
@@ -114,7 +123,7 @@ export default async function RootLayout({
                   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
                 })(window, document, "clarity", "script", "${clarityId}");
-              `
+              `,
             }}
           />
         )}
