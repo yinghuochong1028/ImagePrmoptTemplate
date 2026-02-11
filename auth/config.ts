@@ -7,14 +7,19 @@ import { getIsoTimestr } from "@/lib/time";
 import { getClientIp } from "@/lib/ip";
 import { findUserByEmail, insertUser } from "@/models/user";
 import { createUserCredits } from "@/models/credit";
-import { ProxyAgent, setGlobalDispatcher } from "undici";
 
 // Configure proxy if HTTP_PROXY or HTTPS_PROXY is set
+// Note: undici is only available in Node.js runtime, not Edge
 const proxyUrl = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
-if (proxyUrl) {
+if (proxyUrl && typeof process !== 'undefined' && process.versions?.node) {
   console.log("[Auth Config] Using proxy:", proxyUrl);
-  const proxyAgent = new ProxyAgent(proxyUrl);
-  setGlobalDispatcher(proxyAgent);
+  // Dynamically import undici only in Node.js environment
+  import("undici").then(({ ProxyAgent, setGlobalDispatcher }) => {
+    const proxyAgent = new ProxyAgent(proxyUrl);
+    setGlobalDispatcher(proxyAgent);
+  }).catch((err) => {
+    console.error("[Auth Config] Failed to load undici:", err);
+  });
 }
 
 const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true";

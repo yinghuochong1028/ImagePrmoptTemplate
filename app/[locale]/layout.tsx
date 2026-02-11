@@ -16,9 +16,6 @@ import SignModal from "@/components/sign/modal";
 import { AppContextProvider } from "@/contexts/app";
 import { auth } from "@/auth";
 
-// 关键新增这一行：指定使用 Node.js 运行时
-export const runtime = "nodejs";
-
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",

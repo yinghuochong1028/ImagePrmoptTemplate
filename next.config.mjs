@@ -37,9 +37,9 @@ const nextConfig = {
         ? { exclude: ["error", "warn"] }
         : false,
   },
-  // 这里保持原来的 experimental 配置即可，不要加 runtime
   experimental: {
     optimizePackageImports: ["react-icons"],
+    mdxRs: true,
   },
   async headers() {
     return [
@@ -104,20 +104,4 @@ const nextConfig = {
   },
 };
 
-// 合并 experimental 配置，确保所有属性都被保留
-const configWithMDX = {
-  ...nextConfig,
-  experimental: {
-    ...nextConfig.experimental,
-    mdxRs: true,
-  },
-};
-
-const finalConfig = withBundleAnalyzer(withNextIntl(withMDX(configWithMDX)));
-
-// 清理可能被插件错误添加的 experimental.runtime 配置
-if (finalConfig.experimental && finalConfig.experimental.runtime) {
-  delete finalConfig.experimental.runtime;
-}
-
-export default finalConfig;
+export default withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
