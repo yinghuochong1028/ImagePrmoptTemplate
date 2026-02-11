@@ -1,3 +1,5 @@
+import "server-only";
+
 import NextAuth, { Account, Profile, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
