@@ -7,6 +7,15 @@ import { getIsoTimestr } from "@/lib/time";
 import { getClientIp } from "@/lib/ip";
 import { findUserByEmail, insertUser } from "@/models/user";
 import { createUserCredits } from "@/models/credit";
+import { ProxyAgent, setGlobalDispatcher } from "undici";
+
+// Configure proxy if HTTP_PROXY or HTTPS_PROXY is set
+const proxyUrl = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
+if (proxyUrl) {
+  console.log("[Auth Config] Using proxy:", proxyUrl);
+  const proxyAgent = new ProxyAgent(proxyUrl);
+  setGlobalDispatcher(proxyAgent);
+}
 
 const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true";
 const GOOGLE_ONE_TAP_ENABLED = process.env.NEXT_PUBLIC_AUTH_GOOGLE_ONE_TAP_ENABLED === "true";
