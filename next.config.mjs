@@ -6,7 +6,7 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
-const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const withMDX = mdx({
   options: {
@@ -32,8 +32,12 @@ const nextConfig = {
     ],
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+    removeConsole:
+      process.env.NODE_ENV === "production"
+        ? { exclude: ["error", "warn"] }
+        : false,
   },
+  // 这里可以保留原来的 experimental 配置，也可以留空，真正生效的是下面的 configWithMDX
   experimental: {
     optimizePackageImports: ["react-icons"],
   },
@@ -100,11 +104,12 @@ const nextConfig = {
   },
 };
 
-// Make sure experimental mdx flag is enabled
+// 在这里合并最终的 experimental 配置：同时包含 mdxRs 和 runtime = "nodejs"
 const configWithMDX = {
   ...nextConfig,
   experimental: {
     mdxRs: true,
+    runtime: "nodejs",
   },
 };
 
