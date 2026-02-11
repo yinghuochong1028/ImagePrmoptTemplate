@@ -105,11 +105,26 @@ const nextConfig = {
 };
 
 // 应用所有插件
-let finalConfig = withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
+const configWithPlugins = withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
 
-// 清理可能被插件添加的 runtime 配置
-if (finalConfig.experimental && finalConfig.experimental.runtime) {
-  delete finalConfig.experimental.runtime;
+// 创建新对象，确保删除 experimental.runtime
+const finalConfig = {
+  ...configWithPlugins,
+  experimental: configWithPlugins.experimental
+    ? Object.fromEntries(
+        Object.entries(configWithPlugins.experimental).filter(
+          ([key]) => key !== "runtime"
+        )
+      )
+    : undefined,
+};
+
+// 恢复 headers 和 redirects 函数
+if (configWithPlugins.headers) {
+  finalConfig.headers = configWithPlugins.headers;
+}
+if (configWithPlugins.redirects) {
+  finalConfig.redirects = configWithPlugins.redirects;
 }
 
 export default finalConfig;
