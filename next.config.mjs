@@ -104,14 +104,20 @@ const nextConfig = {
   },
 };
 
-// 最终开启 mdxRs 即可，不要再把 runtime 放在 experimental 里
+// 合并 experimental 配置，确保所有属性都被保留
 const configWithMDX = {
   ...nextConfig,
   experimental: {
+    ...nextConfig.experimental,
     mdxRs: true,
   },
 };
 
 const finalConfig = withBundleAnalyzer(withNextIntl(withMDX(configWithMDX)));
+
+// 清理可能被插件错误添加的 experimental.runtime 配置
+if (finalConfig.experimental && finalConfig.experimental.runtime) {
+  delete finalConfig.experimental.runtime;
+}
 
 export default finalConfig;
