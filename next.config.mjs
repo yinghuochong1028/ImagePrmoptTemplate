@@ -104,4 +104,12 @@ const nextConfig = {
   },
 };
 
-export default withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
+// 应用所有插件
+let finalConfig = withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
+
+// 清理可能被插件添加的 runtime 配置
+if (finalConfig.experimental && finalConfig.experimental.runtime) {
+  delete finalConfig.experimental.runtime;
+}
+
+export default finalConfig;
