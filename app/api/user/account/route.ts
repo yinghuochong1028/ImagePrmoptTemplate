@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/models/db';
-import { auth } from '@/auth/config';
+import { auth } from '@/auth';
 
 export async function GET(req: NextRequest) {
   try {
