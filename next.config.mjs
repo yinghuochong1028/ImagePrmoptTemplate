@@ -21,6 +21,22 @@ const nextConfig = {
   reactStrictMode: false,
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   transpilePackages: ["cos-js-sdk-v5"],
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        dns: false,
+        "fs/promises": false,
+        console: false,
+        diagnostics_channel: false,
+      };
+    }
+    return config;
+  },
   images: {
     formats: ["image/webp", "image/avif"],
     minimumCacheTTL: 604800,
@@ -107,7 +123,7 @@ const nextConfig = {
 // 应用所有插件
 const configWithPlugins = withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
 
-// 创建新对象，确保删除 experimental.runtime
+// 创建新对象，确保删除 experimental.runtime，同时保留 webpack 和其他配置
 const finalConfig = {
   ...configWithPlugins,
   experimental: configWithPlugins.experimental
@@ -119,12 +135,12 @@ const finalConfig = {
     : undefined,
 };
 
-// 恢复 headers 和 redirects 函数
-if (configWithPlugins.headers) {
-  finalConfig.headers = configWithPlugins.headers;
-}
-if (configWithPlugins.redirects) {
-  finalConfig.redirects = configWithPlugins.redirects;
+// 恢复函数属性（插件可能会覆盖它们）
+const functionProps = ['headers', 'redirects', 'webpack', 'rewrites'];
+for (const prop of functionProps) {
+  if (configWithPlugins[prop]) {
+    finalConfig[prop] = configWithPlugins[prop];
+  }
 }
 
 export default finalConfig;
